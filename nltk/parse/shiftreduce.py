@@ -137,6 +137,7 @@ class ShiftReduceParser(ParserI):
             stack.
         """
 
+
         if len(rightmost_stack) != len(rhs): return False
         for i in range(len(rightmost_stack)):
             if isinstance(rightmost_stack[i], Tree):

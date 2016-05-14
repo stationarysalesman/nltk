@@ -115,6 +115,15 @@ class RecursiveDescentParser(ParserI):
         if len(remaining_text) == 0 and len(frontier) == 0:
             if self._trace:
                 self._trace_succeed(tree, frontier)
+
+            # If the production has associated code, execute it
+            p = (tree.productions()[0])
+            t = tree.leaves()
+            print(t)
+            for prod in self.grammar().productions():
+                if p == prod and prod.code():
+                    prod.action(t)
+
             yield tree
 
         # If there's still text, but nothing left to expand, we failed.
@@ -158,12 +167,20 @@ class RecursiveDescentParser(ParserI):
         :param frontier: A list of the locations within ``tree`` of
             all subtrees that have not yet been expanded, and all
             leaves that have not yet been matched.
+
+            Augmented to accept the UNIVERSAL_TERMINAL terminal if
+            it appears, so we can match strings we have not seen
+            before
         """
 
         tree_leaf = tree[frontier[0]]
-        if (len(rtext) > 0 and tree_leaf == rtext[0]):
+
+
+        if (len(rtext) > 0 and tree_leaf == rtext[0] or
+            tree_leaf == "UNIVERSAL_TERMINAL"):
             # If it's a terminal that matches rtext[0], then substitute
             # in the token, and continue parsing.
+            print("Matched", rtext, "with", tree)
             newtree = tree.copy(deep=True)
             newtree[frontier[0]] = rtext[0]
             if self._trace:

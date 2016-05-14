@@ -79,6 +79,7 @@ from nltk.internals import raise_unorderable_types
 
 from nltk.probability import ImmutableProbabilisticMixIn
 from nltk.featstruct import FeatStruct, FeatDict, FeatStructReader, SLASH, TYPE
+import string
 
 #################################################################
 # Nonterminal
@@ -251,9 +252,11 @@ class Production(object):
     :ivar _lhs: The left-hand side of the production.
     :type _rhs: tuple(Nonterminal, terminal)
     :ivar _rhs: The right-hand side of the production.
+    :type _code: str
+    :ivar _code: String of code to be executed on matching rhs
     """
 
-    def __init__(self, lhs, rhs):
+    def __init__(self, lhs, rhs, code=None):
         """
         Construct a new ``Production``.
 
@@ -268,6 +271,7 @@ class Production(object):
         self._lhs = lhs
         self._rhs = tuple(rhs)
         self._hash = hash((self._lhs, self._rhs))
+        self._code = code
 
     def lhs(self):
         """
@@ -284,6 +288,14 @@ class Production(object):
         :rtype: sequence(Nonterminal and terminal)
         """
         return self._rhs
+
+    def code(self):
+        """
+        Return the string of code of this ``Production``.
+
+        :rtype: str
+        """
+        return self._code
 
     def __len__(self):
         """
@@ -353,6 +365,27 @@ class Production(object):
         """
         return self._hash
 
+    def action(self, tokens):
+        """
+        Execute the code associated with the production by performing
+        substitutions of the input tokens for production terminals.
+
+
+        :param tokens: set of tokens from input string
+        :return: None
+        """
+
+        # If no code specified, do nothing
+        if not(self.code()):
+            return
+
+        execstr = self.code()
+        for i, j in enumerate(tokens):
+            matchstr = "$" + str(i+1)
+            substr = "\"" + j + "\""
+            execstr = string.replace(execstr, matchstr, substr)
+
+        exec(execstr)
 
 @python_2_unicode_compatible
 class DependencyProduction(Production):
@@ -623,6 +656,10 @@ class CFG(object):
 
         :type tokens: list(str)
         """
+
+        # hacked to deal with things we haven't seen before
+        return
+
         missing = [tok for tok in tokens
                    if not self._lexical_index.get(tok)]
         if missing:
