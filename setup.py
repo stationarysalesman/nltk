@@ -22,18 +22,18 @@ except LookupError:
 import os
 
 # Use the VERSION file to get NLTK version
-version_file = os.path.join(os.path.dirname(__file__), 'nltk', 'VERSION')
+version_file = os.path.join(os.path.dirname(__file__), 'nltktc', 'VERSION')
 with open(version_file) as fh:
-    nltk_version = fh.read().strip()
+    nltktc_version = fh.read().strip()
 
 # setuptools
 from setuptools import setup, find_packages
 
 setup(
-    name = "nltk",
+    name = "nltktc",
     description = "Natural Language Toolkit",
-    version = nltk_version,
-    url = "http://nltk.org/",
+    version = nltktc_version,
+    url = "http://nltktc.org/",
     long_description = """\
 The Natural Language Toolkit (NLTK) is a Python package for
 natural language processing.  NLTK requires Python 2.7, or 3.2+.""",
@@ -68,7 +68,7 @@ natural language processing.  NLTK requires Python 2.7, or 3.2+.""",
     'Topic :: Text Processing :: Indexing',
     'Topic :: Text Processing :: Linguistic',
     ],
-    package_data = {'nltk': ['test/*.doctest', 'VERSION']},
+    package_data = {'nltktc': ['test/*.doctest', 'VERSION']},
 #    install_requires = ['six>=1.9.0'],
     packages = find_packages(),
     zip_safe=False, # since normal files will be present too?

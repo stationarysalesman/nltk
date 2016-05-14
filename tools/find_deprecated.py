@@ -28,11 +28,11 @@ import re
 import sys
 import tokenize
 import textwrap
-import nltk
-import nltk.corpus
+import nltktc
+import nltktc.corpus
 from doctest import DocTestParser, register_optionflag
 from cStringIO import StringIO
-from nltk import defaultdict
+from nltktc import defaultdict
 
 ######################################################################
 # Regexps
@@ -56,7 +56,7 @@ DEPRECATED_DEF_PAT = (
 DEPRECATED_DEF_RE = re.compile(DEPRECATED_DEF_PAT, re.MULTILINE)
 
 CORPUS_READ_METHOD_RE = re.compile(
-    '({})\.read\('.format('|'.join(re.escape(n) for n in dir(nltk.corpus))))
+    '({})\.read\('.format('|'.join(re.escape(n) for n in dir(nltktc.corpus))))
 
 CLASS_DEF_RE = re.compile('^\s*class\s+(\w+)\s*[:\(]')
 
@@ -211,15 +211,15 @@ def print_deprecated_uses_in(readline, path, dep_files, dep_names,
 def main():
     paths = sys.argv[1:] or ['.']
 
-    print('Importing nltk...')
+    print('Importing nltktc...')
     try:
-        import nltk
+        import nltktc
     except ImportError:
-        print('Unable to import nltk -- check your PYTHONPATH.')
+        print('Unable to import nltktc -- check your PYTHONPATH.')
         sys.exit(-1)
 
-    print('Finding definitions of deprecated funtions & classes in nltk...')
-    find_deprecated_defs(nltk.__path__[0])
+    print('Finding definitions of deprecated funtions & classes in nltktc...')
+    find_deprecated_defs(nltktc.__path__[0])
 
     print('Looking for possible uses of deprecated funcs & classes...')
     dep_names = print_deprecated_uses(paths)

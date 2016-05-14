@@ -17,7 +17,7 @@ import sys, os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-# build docs using nltk from the upper dir, not the installed version
+# build docs using nltktc from the upper dir, not the installed version
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration -----------------------------------------------------
@@ -87,7 +87,7 @@ exclude_patterns = ['_build', 'api/modules.rst', 'dev/*.rst']
 pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
-modindex_common_prefix = ['nltk.']
+modindex_common_prefix = ['nltktc.']
 
 
 # -- Options for HTML output ---------------------------------------------------
@@ -218,7 +218,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'nltk', 'NLTK Documentation',
+    ('index', 'nltktc', 'NLTK Documentation',
      ['Steven Bird'], 1)
 ]
 

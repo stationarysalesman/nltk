@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import re
 import sys
-import nltk
+import nltktc
 import epydoc.docbuilder
 import epydoc.cli
 from epydoc import log
@@ -27,7 +27,7 @@ def find_all_names(stoplist):
         # subclasses=False,
         private=False))
     logger._verbosity = 5
-    names = nltk.defaultdict(list)
+    names = nltktc.defaultdict(list)
     n = 0
     for valdoc in valdocs:
         name = valdoc.canonical_name
@@ -58,7 +58,7 @@ INDEXTERM = '<indexterm type="nltk"><primary>%s</primary></indexterm>'
 
 
 def scan_xml(filenames, names):
-    fdist = nltk.FreqDist()
+    fdist = nltktc.FreqDist()
 
     def linesub(match):
         line = match.group()
