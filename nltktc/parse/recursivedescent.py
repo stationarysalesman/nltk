@@ -119,7 +119,6 @@ class RecursiveDescentParser(ParserI):
             # If the production has associated code, execute it
             p = (tree.productions()[0])
             t = tree.leaves()
-            print(t)
             for prod in self.grammar().productions():
                 if p == prod and prod.code():
                     prod.action(t)
@@ -180,7 +179,6 @@ class RecursiveDescentParser(ParserI):
             tree_leaf == "UNIVERSAL_TERMINAL"):
             # If it's a terminal that matches rtext[0], then substitute
             # in the token, and continue parsing.
-            print("Matched", rtext, "with", tree)
             newtree = tree.copy(deep=True)
             newtree[frontier[0]] = rtext[0]
             if self._trace:
