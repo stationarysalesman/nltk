@@ -254,6 +254,8 @@ class Production(object):
     :ivar _rhs: The right-hand side of the production.
     :type _code: str
     :ivar _code: String of code to be executed on matching rhs
+    :type _result: various
+    :ivar _result: Result of code execution
     """
 
     def __init__(self, lhs, rhs, code=None):
@@ -272,6 +274,7 @@ class Production(object):
         self._rhs = tuple(rhs)
         self._hash = hash((self._lhs, self._rhs))
         self._code = code
+        self._result = None
 
     def lhs(self):
         """
@@ -296,6 +299,14 @@ class Production(object):
         :rtype: str
         """
         return self._code
+
+    def result(self):
+        """
+        Return the result of the most recent execution of
+        action code.
+        :return: result of executed code
+        """
+        return self._result
 
     def __len__(self):
         """
@@ -365,14 +376,15 @@ class Production(object):
         """
         return self._hash
 
-    def action(self, tokens):
+    def action(self, tree, prev):
         """
         Execute the code associated with the production by performing
         substitutions of the input tokens for production terminals.
 
 
         :param tokens: set of tokens from input string
-        :return: None
+        :param prev: Result of the previously executed code
+        :return: Result of this action
         """
 
         # If no code specified, do nothing
@@ -380,12 +392,18 @@ class Production(object):
             return
 
         execstr = self.code()
-        for i, j in enumerate(tokens):
+        for i, j in enumerate(tree):
             matchstr = "$" + str(i+1)
-            substr = "\"" + j + "\""
+            # part = min(len(j)-1, 1) # get first item from leaves
+            # tup = j[part:len(j)]
+            tup = ''.join(j)
+            substr = "\"" + str(tup) + "\""
             execstr = string.replace(execstr, matchstr, substr)
 
-        exec(execstr)
+        that = prev
+        exec execstr
+        return that
+
 
 @python_2_unicode_compatible
 class DependencyProduction(Production):

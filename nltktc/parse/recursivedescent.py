@@ -63,12 +63,18 @@ class RecursiveDescentParser(ParserI):
             parsing a text.  ``0`` will generate no tracing output;
             and higher numbers will produce more verbose tracing
             output.
+        :type that: various
+        :param that: result of action code
         """
         self._grammar = grammar
         self._trace = trace
+        self._that = None
 
     def grammar(self):
         return self._grammar
+
+    def that(self):
+        return self._that
 
     def parse(self, tokens):
         # Inherit docs from ParserI
@@ -121,7 +127,8 @@ class RecursiveDescentParser(ParserI):
             t = tree.leaves()
             for prod in self.grammar().productions():
                 if p == prod and prod.code():
-                    prod.action(t)
+                    res = self._that
+                    self._that = prod.action(tree, res)
 
             yield tree
 
